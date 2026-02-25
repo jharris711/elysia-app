@@ -1,4 +1,5 @@
 import { Elysia } from "elysia";
+import { staticPlugin } from '@elysiajs/static'
 import ejs from 'ejs'
 
 const app = new Elysia()
@@ -9,11 +10,13 @@ const app = new Elysia()
 
     return response;
   })
-  .get("/", () => "Hi Elysia")
   .get("/home", async () => {
     const html = await ejs.renderFile('views/home.ejs', { name: 'Elysia' });
     return html
   })
+  .use(await staticPlugin({
+    prefix: '/'
+  })) 
   .listen(3000);
 
 console.log(
